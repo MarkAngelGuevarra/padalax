@@ -7,8 +7,6 @@ contracts/**/test_snapshots/
 # Node / Dependencies
 node_modules/
 scripts/node_modules/
-package-lock.json
-scripts/package-lock.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
