@@ -24,7 +24,7 @@ fn test_create_and_claim_remittance_success() {
 
     // Secret claim code: "SECRET_PIN_2026"
     let secret_preimage = Bytes::from_slice(&env, b"SECRET_PIN_2026");
-    let claim_hash = env.crypto().sha256(&secret_preimage);
+    let claim_hash: BytesN<32> = env.crypto().sha256(&secret_preimage).into();
 
     // 1. Create Remittance
     let created_id = client.create_remittance(
@@ -75,7 +75,7 @@ fn test_claim_with_wrong_preimage_panics() {
     let memo = String::from_str(&env, "Test Wrong Preimage");
 
     let secret_preimage = Bytes::from_slice(&env, b"REAL_SECRET");
-    let claim_hash = env.crypto().sha256(&secret_preimage);
+    let claim_hash: BytesN<32> = env.crypto().sha256(&secret_preimage).into();
 
     client.create_remittance(
         &sender,
@@ -107,7 +107,7 @@ fn test_refund_after_expiration_success() {
     let memo = String::from_str(&env, "Emergency Medical Aid");
 
     let secret_preimage = Bytes::from_slice(&env, b"UNCLAIMED_CODE");
-    let claim_hash = env.crypto().sha256(&secret_preimage);
+    let claim_hash: BytesN<32> = env.crypto().sha256(&secret_preimage).into();
 
     client.create_remittance(
         &sender,
@@ -146,7 +146,7 @@ fn test_refund_before_expiration_fails() {
     let memo = String::from_str(&env, "Cannot Refund Early");
 
     let secret_preimage = Bytes::from_slice(&env, b"SECRET");
-    let claim_hash = env.crypto().sha256(&secret_preimage);
+    let claim_hash: BytesN<32> = env.crypto().sha256(&secret_preimage).into();
 
     client.create_remittance(
         &sender,

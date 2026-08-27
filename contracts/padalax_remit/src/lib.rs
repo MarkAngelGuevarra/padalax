@@ -141,7 +141,7 @@ impl PadalaXRemitContract {
         }
 
         // Verify SHA-256 Hash Preimage
-        let calculated_hash = env.crypto().sha256(&claim_preimage);
+        let calculated_hash: BytesN<32> = env.crypto().sha256(&claim_preimage).into();
         if calculated_hash != remittance.claim_hash {
             panic!("Invalid claim code preimage");
         }
