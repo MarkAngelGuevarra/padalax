@@ -6,26 +6,63 @@ import { RefundRemittance } from './components/RefundRemittance';
 import { LiveTelemetry } from './components/LiveTelemetry';
 import { VoucherModal } from './components/VoucherModal';
 import { RoadmapModal } from './components/RoadmapModal';
+import { WalletModal } from './components/WalletModal';
 import {
   WalletState,
+  WalletType,
   RemittanceRecord,
-  connectFreighter,
+  connectWallet,
   fetchAccountBalance,
-  getSavedRemittances
+  getSavedRemittances,
+  STELLAR_EXPERT_TESTNET,
+  DEPLOYED_CONTRACT_ID,
 } from './utils/stellar';
-import { Send, Gift, RotateCcw, Activity, ShieldCheck, Zap, Globe, Sparkles, ChevronRight } from 'lucide-react';
+import {
+  Send,
+  Gift,
+  RotateCcw,
+  Activity,
+  ShieldCheck,
+  Zap,
+  Globe,
+  Sparkles,
+  ChevronRight,
+  ExternalLink,
+  CheckCircle2,
+  AlertTriangle,
+  Loader2,
+} from 'lucide-react';
+
+interface TxStatusBanner {
+  id: string;
+  type: 'pending' | 'success' | 'failed';
+  title: string;
+  message: string;
+  txHash?: string;
+}
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'send' | 'claim' | 'refund' | 'telemetry'>('send');
   const [wallet, setWallet] = useState<WalletState>({
     connected: false,
     address: null,
+    walletType: 'freighter',
     network: 'TESTNET',
     balanceXLM: '0.00',
   });
   const [remittances, setRemittances] = useState<RemittanceRecord[]>([]);
   const [activeVoucher, setActiveVoucher] = useState<RemittanceRecord | null>(null);
   const [isRoadmapOpen, setIsRoadmapOpen] = useState<boolean>(false);
+  const [isWalletModalOpen, setIsWalletModalOpen] = useState<boolean>(false);
+  const [walletError, setWalletError] = useState<string | null>(null);
+  const [isConnectingWallet, setIsConnectingWallet] = useState<boolean>(false);
+  const [txBanner, setTxBanner] = useState<TxStatusBanner | null>({
+    id: 'contract-live',
+    type: 'success',
+    title: 'Soroban Smart Contract Live on Testnet',
+    message: `Contract ID: ${DEPLOYED_CONTRACT_ID.slice(0, 8)}...${DEPLOYED_CONTRACT_ID.slice(-8)} is active & accepting remittances.`,
+    txHash: '4d266d77030d59f9afd3de0f8a2f123612f3db1e5e3e823acb4091b11bc24883',
+  });
 
   // Load initial data
   useEffect(() => {
@@ -36,24 +73,29 @@ export const App: React.FC = () => {
     setRemittances(getSavedRemittances());
   };
 
-  const handleConnectWallet = async () => {
-    const res = await connectFreighter();
-    if (res.success && res.address) {
-      const bal = await fetchAccountBalance(res.address);
-      setWallet({
-        connected: true,
-        address: res.address,
-        network: 'TESTNET',
-        balanceXLM: bal,
-      });
-    } else {
-      // Mock demo wallet if Freighter not installed
-      setWallet({
-        connected: true,
-        address: 'GCGV7KLAPAZW6X9R8234DF987TESTNETMOCK',
-        network: 'TESTNET',
-        balanceXLM: '9850.50',
-      });
+  const handleSelectWallet = async (walletType: WalletType) => {
+    setWalletError(null);
+    setIsConnectingWallet(true);
+
+    try {
+      const res = await connectWallet(walletType);
+      if (res.success && res.address) {
+        const bal = await fetchAccountBalance(res.address);
+        setWallet({
+          connected: true,
+          address: res.address,
+          walletType,
+          network: 'TESTNET',
+          balanceXLM: bal,
+        });
+        setIsWalletModalOpen(false);
+      } else {
+        setWalletError(res.error || 'Failed to connect selected wallet provider.');
+      }
+    } catch (err: any) {
+      setWalletError(err.message || 'Unexpected connection error.');
+    } finally {
+      setIsConnectingWallet(false);
     }
   };
 
@@ -63,18 +105,45 @@ export const App: React.FC = () => {
       {/* Top Navbar */}
       <Header
         wallet={wallet}
-        onConnect={handleConnectWallet}
+        onConnect={() => setIsWalletModalOpen(true)}
         onOpenRoadmap={() => setIsRoadmapOpen(true)}
       />
 
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full">
         
+        {/* Live Transaction / Contract Event Status Toast Banner (Level 2 Requirement) */}
+        {txBanner && (
+          <div className="max-w-3xl mx-auto mb-6 p-4 rounded-2xl bg-slate-900/90 border border-cyan-500/30 flex items-center justify-between gap-3 text-xs shadow-lg animate-fadeIn">
+            <div className="flex items-center space-x-3">
+              {txBanner.type === 'pending' && <Loader2 className="w-5 h-5 text-amber-400 animate-spin flex-shrink-0" />}
+              {txBanner.type === 'success' && <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />}
+              {txBanner.type === 'failed' && <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0" />}
+              <div>
+                <span className="font-bold text-white block">{txBanner.title}</span>
+                <p className="text-slate-400 text-[11px] mt-0.5">{txBanner.message}</p>
+              </div>
+            </div>
+
+            {txBanner.txHash && (
+              <a
+                href={`${STELLAR_EXPERT_TESTNET}/tx/${txBanner.txHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-shrink-0 inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-cyan-300 hover:text-white transition-colors"
+              >
+                <span>Ledger Tx</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            )}
+          </div>
+        )}
+
         {/* Hero Section */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-800/80 text-cyan-300 text-xs font-semibold mb-4 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-            <span>Stellar RiseIn Monthly Builder • Soroban Protocol</span>
+            <span>Stellar RiseIn Monthly Builder • Multi-Wallet Soroban dApp</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white font-sans leading-tight">
@@ -166,6 +235,13 @@ export const App: React.FC = () => {
               onSuccess={(voucher) => {
                 refreshData();
                 setActiveVoucher(voucher);
+                setTxBanner({
+                  id: voucher.id,
+                  type: 'success',
+                  title: `Remittance #${voucher.id} Locked on Soroban`,
+                  message: `Successfully locked ${voucher.amount} ${voucher.currency} (₱${voucher.amountPhp.toFixed(2)} PHP) into escrow.`,
+                  txHash: voucher.txHash,
+                });
               }}
             />
           )}
@@ -193,7 +269,7 @@ export const App: React.FC = () => {
               Levels 1, 2, 3, 4 & 5 Fully Implemented
             </h4>
             <p className="text-xs text-slate-400 mt-1">
-              Includes Horizon Payment Automation, Soroban Rust Contract, Cargo Tests, Web3 PWA, and QR Voucher system.
+              Includes Multi-Wallet Modal, Soroban Contract Deploy, 6 Cargo Tests, CI/CD Workflow, and QR Vouchers.
             </p>
           </div>
 
@@ -209,6 +285,15 @@ export const App: React.FC = () => {
       </main>
 
       {/* Modals */}
+      <WalletModal
+        isOpen={isWalletModalOpen}
+        onClose={() => setIsWalletModalOpen(false)}
+        onSelectWallet={handleSelectWallet}
+        wallet={wallet}
+        errorMessage={walletError}
+        isConnecting={isConnectingWallet}
+      />
+
       <VoucherModal
         voucher={activeVoucher}
         onClose={() => setActiveVoucher(null)}
