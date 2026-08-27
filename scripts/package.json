@@ -1,0 +1,13 @@
+{
+  "name": "padalax-scripts",
+  "version": "1.0.0",
+  "description": "Stellar RiseIn Level 1 Setup and Friendbot Automation for PadalaX",
+  "main": "level1_stellar_setup.js",
+  "type": "module",
+  "scripts": {
+    "level1": "node level1_stellar_setup.js"
+  },
+  "dependencies": {
+    "@stellar/stellar-sdk": "^15.1.0"
+  }
+}
