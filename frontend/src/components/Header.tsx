@@ -44,11 +44,18 @@ export const Header: React.FC<HeaderProps> = ({ wallet, onConnect, onOpenRoadmap
             <span>RiseIn Levels 1–7</span>
           </button>
 
-          {/* Stellar Testnet Status Indicator */}
-          <div className="hidden md:flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300">
+          {/* Stellar Testnet Status & Contract Link */}
+          <a
+            href="https://stellar.expert/explorer/testnet/contract/CATUXAJ7QPHA5AQM3F3D2HXAFN2BDEZHRTXUL2742XT6LVA2JRO7S3DM"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:border-cyan-500/50 hover:text-white transition-all"
+            title="View Deployed Contract on Stellar Expert"
+          >
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span className="font-medium">Stellar Testnet</span>
-          </div>
+            <span className="font-medium">Contract: CATUX...S3DM</span>
+            <ExternalLink className="w-3 h-3 text-cyan-400" />
+          </a>
 
           {/* Wallet Connect Button */}
           {wallet.connected && wallet.address ? (

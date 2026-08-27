@@ -2,6 +2,7 @@ import { isConnected, getAddress, requestAccess } from '@stellar/freighter-api';
 
 export const HORIZON_TESTNET_URL = 'https://horizon-testnet.stellar.org';
 export const STELLAR_EXPERT_TESTNET = 'https://stellar.expert/explorer/testnet';
+export const DEPLOYED_CONTRACT_ID = 'CATUXAJ7QPHA5AQM3F3D2HXAFN2BDEZHRTXUL2742XT6LVA2JRO7S3DM';
 
 // Exchange rates (mock real-time reference)
 export const EXCHANGE_RATES = {
