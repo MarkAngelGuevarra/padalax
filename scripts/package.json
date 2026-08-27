@@ -5,7 +5,8 @@
   "main": "level1_stellar_setup.js",
   "type": "module",
   "scripts": {
-    "level1": "node level1_stellar_setup.js"
+    "level1": "node level1_stellar_setup.js",
+    "verify:level3": "node deploy_and_interact.js"
   },
   "dependencies": {
     "@stellar/stellar-sdk": "^15.1.0"
