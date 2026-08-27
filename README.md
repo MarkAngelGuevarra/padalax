@@ -2,20 +2,25 @@
 
 [![Stellar](https://img.shields.io/badge/Blockchain-Stellar-08B5E5?logo=stellar&logoColor=white)](https://stellar.org)
 [![Soroban](https://img.shields.io/badge/Smart%20Contracts-Soroban%20Rust-black?logo=rust)](https://soroban.stellar.org)
-[![Belt](https://img.shields.io/badge/RiseIn%20Belt-Levels%201%2C%202%2C%203%20%26%20Idea-orange)](./project_proposal.md)
+[![CI/CD Pipeline](https://github.com/MarkAngelGuevarra/padalax/actions/workflows/ci.yml/badge.svg)](https://github.com/MarkAngelGuevarra/padalax/actions/workflows/ci.yml)
+[![Live Demo](https://img.shields.io/badge/Live%20dApp-Vercel-black?logo=vercel)](https://padalax.vercel.app)
+[![Belt](https://img.shields.io/badge/RiseIn%20Belt-Orange%20Belt%20(Level%203%20%2B%201%2C%202)-orange)](./project_proposal.md)
 
 **PadalaX** is a decentralized, low-cost cross-border remittance and cryptographic voucher escrow protocol built on **Stellar and Soroban**. Designed for **Overseas Filipino Workers (OFWs)** and cross-border families, PadalaX slashes international remittance fees from traditional 5%–8% down to **less than \$0.001**, settles in **< 5 seconds**, and provides unbanked recipients with one-time claim codes for direct fiat settlement (GCash, Maya, local bank accounts).
 
 ---
 
-## 🔗 Submission Navigation & Deliverables
+## 🔗 Level 3 (Orange Belt) Submission Verification Hub
 
-| Level | Milestone | Status | Key Deliverables |
-| :--- | :--- | :---: | :--- |
-| 💭 **Idea Submission** | Problem & Architecture Proposal | ✅ Ready | [View Proposal (`project_proposal.md`)](./project_proposal.md) |
-| ⚪ **Level 1: White Belt** | Stellar Account & Payment Setup | ✅ Ready | [`scripts/level1_stellar_setup.js`](./scripts/level1_stellar_setup.js) |
-| 🟡 **Level 2: Yellow Belt** | Soroban Rust Smart Contract | ✅ Ready | [`contracts/padalax_remit/src/lib.rs`](./contracts/padalax_remit/src/lib.rs) |
-| 🟠 **Level 3: Orange Belt** | State Modeling & Unit Tests | ✅ Ready | [`contracts/padalax_remit/src/test.rs`](./contracts/padalax_remit/src/test.rs) |
+| Submission Requirement | Status | Live Link / Identifier |
+| :--- | :---: | :--- |
+| 🌐 **Live Web3 dApp (Vercel)** | ✅ Ready | [padalax.vercel.app](https://padalax.vercel.app) |
+| 📜 **Deployed Soroban Contract** | ✅ Verified | [`CATUXAJ7QPHA5AQM3F3D2HXAFN2BDEZHRTXUL2742XT6LVA2JRO7S3DM`](https://stellar.expert/explorer/testnet/contract/CATUXAJ7QPHA5AQM3F3D2HXAFN2BDEZHRTXUL2742XT6LVA2JRO7S3DM) |
+| ⚡ **Contract Interaction Tx Hash** | ✅ Verified | [`4d266d77030d59f9afd3de0f8a2f123612f3db1e5e3e823acb4091b11bc24883`](https://stellar.expert/explorer/testnet/tx/4d266d77030d59f9afd3de0f8a2f123612f3db1e5e3e823acb4091b11bc24883) |
+| 📦 **Contract Deployment Tx Hash** | ✅ Verified | [`6eecd976d300415abb1bc348ac6eb3dc68aa9b5593f88ca49672a30adccbb04c`](https://stellar.expert/explorer/testnet/tx/6eecd976d300415abb1bc348ac6eb3dc68aa9b5593f88ca49672a30adccbb04c) |
+| ⚙️ **CI/CD Pipeline Workflow** | ✅ Running | [GitHub Actions `.github/workflows/ci.yml`](https://github.com/MarkAngelGuevarra/padalax/actions) |
+| 🧪 **Contract Unit Tests (6/6 Pass)** | ✅ 100% | [`contracts/padalax_remit/src/test.rs`](./contracts/padalax_remit/src/test.rs) |
+| 🧪 **Frontend Unit Tests (4/4 Pass)** | ✅ 100% | [`frontend/src/utils/__tests__/stellar.test.ts`](./frontend/src/utils/__tests__/stellar.test.ts) |
 
 ---
 
@@ -26,38 +31,13 @@ Demonstrate programmatic keypair creation, Testnet account funding via Friendbot
 
 ### How to Run:
 ```bash
-cd scripts
-npm install
-npm run level1
+npm run level1 --prefix scripts
 ```
 
-### Verified Output:
-```text
-====================================================
-🇵🇭 PadalaX — Stellar RiseIn Level 1 (White Belt) Run
-====================================================
-
-🔑 1. Generated Stellar Accounts:
-   [Sender (OFW)]    Public: GCGV...7KLA
-   [Recipient (MNL)] Public: GDKL...92MN
-
-⏳ Funding Sender and Recipient via Friendbot...
-✅ Accounts successfully funded with 10,000 Testnet XLM!
-
-💰 2. Account Balances on Testnet:
-   Sender Initial Balance:    10000.0000000 XLM
-   Recipient Initial Balance: 10000.0000000 XLM
-
-📦 3. Building Stellar Remittance Transaction...
-🚀 4. Submitting Transaction to Stellar Testnet...
-
-🎉 ====================================================
-✅ Level 1 Remittance Payment Confirmed on Stellar!
-   Transaction Hash: a918f4d8...b2c34
-   Ledger Number:    482910
-   Explorer Link:    https://stellar.expert/explorer/testnet/tx/a918f4d8...
-====================================================
-```
+### Verified Horizon Payment Output:
+* **Transaction Hash:** `0ca3a96342e58297fcacaa3abce4e02d47ad54a453b7a6cd6b516272f22d4c3d`
+* **Ledger Number:** `4364403`
+* **Explorer Link:** [https://stellar.expert/explorer/testnet/tx/0ca3a96342e58297fcacaa3abce4e02d47ad54a453b7a6cd6b516272f22d4c3d](https://stellar.expert/explorer/testnet/tx/0ca3a96342e58297fcacaa3abce4e02d47ad54a453b7a6cd6b516272f22d4c3d)
 
 ---
 
@@ -66,45 +46,59 @@ npm run level1
 ### Objective
 Set up Soroban smart contract development environment, scaffold Rust smart contract (`PadalaXRemitContract`), and compile `.wasm` binary.
 
-### Smart Contract Structure:
 * **Contract Crate:** `contracts/padalax_remit`
 * **Entry Point:** [`contracts/padalax_remit/src/lib.rs`](./contracts/padalax_remit/src/lib.rs)
 * **SDK Version:** `soroban-sdk = "21.0.0"`
+* **Compiled WASM Hash:** `b7ba4c0d018e17786bd784946fded417505545e2830997f5ef60351a5aa249b1`
 
 ---
 
-## 🟠 Level 3 — Orange Belt Deliverables (State Modeling & Logic)
+## 🟠 Level 3 — Orange Belt Deliverables (Production Smart Contract & Testing)
 
-### Objective
-Implement stateful data modeling, cryptographic hash-preimage authorization, time-locked expiration, refund security, and automated unit testing.
+### Advanced Smart Contract Architecture
+1. **Persistent State Modeling:** Escrows are isolated under `DataKey::Remittance(u32)` and tracked globally via `DataKey::TotalVolume`.
+2. **Cryptographic SHA-256 HashLock Preimage:** Claimers must supply the exact plaintext secret code whose SHA-256 hash matches the escrow parameter:
+   $$\text{SHA-256}(\text{claim\_preimage}) == \text{remittance.claim\_hash}$$
+3. **Time-Locked Autonomous Refunds:** Senders retain 100% refund authority strictly after expiration timestamp (`current_time > expiry_timestamp`).
+4. **Access Control (`require_auth`):** Enforced on senders during creation/refund and on claimers during payout.
+5. **Real-Time Event Streaming:** Publishes structured event telemetry under `TOPIC_REMIT` (`created`, `claimed`, `refunded`).
 
-### Key Soroban Contract Functions:
-1. `create_remittance(sender, id, claim_hash, amount, expiry, memo)`:
-   * Requires `sender.require_auth()`.
-   * Locks funds into escrow identified by a unique `u32` ID.
-   * Tracks global protocol volume (`DataKey::TotalVolume`).
-2. `claim_remittance(recipient, id, claim_preimage)`:
-   * Requires `recipient.require_auth()`.
-   * Verifies SHA-256 hash match: `env.crypto().sha256(&claim_preimage) == remittance.claim_hash`.
-   * Ensures `current_time <= expiry_timestamp`.
-   * Transfers voucher status to `RemittanceStatus::Claimed`.
-3. `refund_remittance(sender, id)`:
-   * Requires `sender.require_auth()`.
-   * Only permits refund if `current_time > expiry_timestamp` and status is `Pending`.
-   * Transfers status to `RemittanceStatus::Refunded`.
-4. `get_remittance(id)`: Read-only simulation for live UI tracking.
-5. `get_total_volume()`: Read-only protocol metric query.
-
-### How to Run Automated Unit Tests:
+### How to Run Smart Contract Unit Tests:
 ```bash
 cargo test
 ```
 
-### Test Suite Coverage:
-* `test_create_and_claim_remittance_success`: Full lifecycle test from deposit to valid preimage redemption.
-* `test_claim_with_wrong_preimage_panics`: Verifies rejection of incorrect secret codes.
-* `test_refund_after_expiration_success`: Confirms sender refund after time lock expires.
-* `test_refund_before_expiration_fails`: Prevents premature sender withdrawals.
+### Verified Test Suite (6/6 Passing):
+```text
+running 6 tests
+test test::test_refund_after_expiration_success ... ok
+test test::test_create_and_claim_remittance_success ... ok
+test test::test_refund_before_expiration_fails - should panic ... ok
+test test::test_cannot_claim_expired_remittance - should panic ... ok
+test test::test_unauthorized_sender_cannot_refund - should panic ... ok
+test test::test_claim_with_wrong_preimage_panics - should panic ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; finished in 0.54s
+```
+
+---
+
+## 📱 Mobile Responsive Web3 PWA & Frontend Testing
+
+### Features
+* **Freighter Wallet Integration:** Seamless connection and balance queries on Stellar Testnet.
+* **OFW Remittance Flow:** Live PHP currency calculator and traditional fee savings breakdown.
+* **Dynamic QR Code Voucher Modal:** Interactive voucher generation with 1-click sharing to Viber, WhatsApp, and SMS.
+* **Instant Cashout Simulation:** Direct off-ramping simulation to GCash, Maya, and local bank accounts.
+* **Protocol Telemetry Stream:** Live transaction tracking and Stellar Expert Explorer links.
+
+### How to Run Frontend Tests & Build:
+```bash
+cd frontend
+npm install
+npm test       # Runs Vitest unit tests (4/4 Pass)
+npm run build  # Compiles production bundle for Vercel
+```
 
 ---
 
@@ -112,24 +106,41 @@ cargo test
 
 ```
 padalax/
+├── .github/
+│   └── workflows/
+│       └── ci.yml                  # GitHub Actions CI/CD Pipeline
 ├── contracts/
 │   └── padalax_remit/
 │       ├── Cargo.toml
 │       └── src/
-│           ├── lib.rs              # Soroban Smart Contract (Level 2 & 3)
-│           └── test.rs             # Automated Unit Tests (100% Pass)
-├── scripts/
+│           ├── lib.rs              # Soroban Smart Contract (Levels 2 & 3)
+│           └── test.rs             # 6 Automated Unit Tests (100% Pass)
+├── frontend/                        # Web3 PWA (React + Vite + Tailwind)
+│   ├── src/
+│   │   ├── components/             # Header, Vouchers, Telemetry, Roadmap
+│   │   ├── utils/                  # Stellar SDK & Cryptographic Utilities
+│   │   │   └── __tests__/          # Vitest Frontend Tests (4/4 Pass)
+│   │   ├── App.tsx
+│   │   └── main.tsx
 │   ├── package.json
-│   └── level1_stellar_setup.js     # Level 1 Wallet & Payment Script
+│   ├── vite.config.ts
+│   └── vercel.json                 # Vercel Deployment Configuration
+├── scripts/
+│   ├── level1_stellar_setup.js     # Level 1 Wallet & Payment Script
+│   ├── deploy_and_interact.js      # Level 3 Testnet Deployment Verifier
+│   └── package.json
 ├── Cargo.toml                      # Root Cargo Workspace
 ├── project_proposal.md             # RiseIn Idea Submission Document
-└── README.md                       # Main Documentation & Submission Guide
+└── README.md                       # Master Documentation
 ```
 
 ---
 
-## 🚀 Next Milestones (Levels 4–7)
-* **Level 4 (Green Belt):** React + Vite Web3 PWA with Freighter integration.
-* **Level 5 (Blue Belt):** Dynamic QR voucher generator, real-time PHP/USD calculator, and live telemetry.
-* **Level 6 (Black Belt):** Public Stellar Mainnet deployment, gasless relayer, and security audit report.
-* **Level 7 (Master Track):** Live SEP-24 fiat off-ramp integration for GCash and Maya.
+## 🚀 RiseIn Belt Roadmap Summary
+* ⚪ **Level 1 (White Belt):** Stellar network fundamentals, Friendbot funding, and payment memos.
+* 🟡 **Level 2 (Yellow Belt):** Soroban Rust contract scaffolding, types, and WASM compilation.
+* 🟠 **Level 3 (Orange Belt):** Persistent state, SHA-256 hashlock authorization, time-locked refunds, 6 unit tests, and live Testnet deployment (`CATUXAJ7Q...`).
+* 🟢 **Level 4 (Green Belt):** Web3 React + Vite PWA with Freighter wallet integration on Vercel.
+* 🔵 **Level 5 (Blue Belt):** Dynamic QR vouchers, real-time PHP conversion, and live telemetry.
+* ⚫ **Level 6 (Black Belt):** Stellar Mainnet deployment and gasless fee-bump relayers.
+* 🏆 **Level 7 (Master Track):** Live SEP-24 fiat off-ramps connecting to GCash and Maya.
