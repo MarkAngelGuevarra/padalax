@@ -10,6 +10,20 @@
 
 ---
 
+## 🖼️ Live Web3 dApp Preview (Desktop & Mobile Responsive)
+
+<p align="center">
+  <img src="./assets/screenshots/desktop_ui.png" alt="PadalaX Desktop Web3 dApp" width="800" style="border-radius: 12px; margin-bottom: 16px;" />
+</p>
+
+<p align="center">
+  <img src="./assets/screenshots/mobile_ui.png" alt="PadalaX Mobile Responsive UI" width="320" style="border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);" />
+  <br />
+  <em>📱 Mobile Responsive UI tested and running live at <a href="https://padalax.vercel.app">padalax.vercel.app</a></em>
+</p>
+
+---
+
 ## 🔗 Level 3 (Orange Belt) Submission Verification Hub
 
 | Submission Requirement | Status | Live Link / Identifier |
@@ -41,15 +55,16 @@ npm run level1 --prefix scripts
 
 ---
 
-## 🟡 Level 2 — Yellow Belt Deliverables (Soroban Foundation)
+## 🟡 Level 2 — Yellow Belt Deliverables (Soroban Foundation & Multi-Wallet)
 
 ### Objective
-Set up Soroban smart contract development environment, scaffold Rust smart contract (`PadalaXRemitContract`), and compile `.wasm` binary.
+Set up Soroban smart contract development environment, scaffold Rust smart contract (`PadalaXRemitContract`), implement Multi-Wallet selector, and compile `.wasm` binary.
 
 * **Contract Crate:** `contracts/padalax_remit`
 * **Entry Point:** [`contracts/padalax_remit/src/lib.rs`](./contracts/padalax_remit/src/lib.rs)
 * **SDK Version:** `soroban-sdk = "21.0.0"`
 * **Compiled WASM Hash:** `b7ba4c0d018e17786bd784946fded417505545e2830997f5ef60351a5aa249b1`
+* **Multi-Wallet Providers:** Freighter, Albedo, xBull, LOBSTR, and Rabet with explicit error handling (`WALLET_NOT_FOUND`, `TRANSACTION_REJECTED`, `INSUFFICIENT_BALANCE`).
 
 ---
 
@@ -86,7 +101,7 @@ test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; finished in 0.54s
 ## 📱 Mobile Responsive Web3 PWA & Frontend Testing
 
 ### Features
-* **Freighter Wallet Integration:** Seamless connection and balance queries on Stellar Testnet.
+* **Multi-Wallet Support:** Freighter, Albedo, xBull, LOBSTR, and Rabet connection on Stellar Testnet.
 * **OFW Remittance Flow:** Live PHP currency calculator and traditional fee savings breakdown.
 * **Dynamic QR Code Voucher Modal:** Interactive voucher generation with 1-click sharing to Viber, WhatsApp, and SMS.
 * **Instant Cashout Simulation:** Direct off-ramping simulation to GCash, Maya, and local bank accounts.
@@ -109,6 +124,10 @@ padalax/
 ├── .github/
 │   └── workflows/
 │       └── ci.yml                  # GitHub Actions CI/CD Pipeline
+├── assets/
+│   └── screenshots/
+│       ├── desktop_ui.png          # Desktop Web3 dApp Screenshot
+│       └── mobile_ui.png           # Mobile Responsive UI Screenshot
 ├── contracts/
 │   └── padalax_remit/
 │       ├── Cargo.toml
@@ -117,7 +136,7 @@ padalax/
 │           └── test.rs             # 6 Automated Unit Tests (100% Pass)
 ├── frontend/                        # Web3 PWA (React + Vite + Tailwind)
 │   ├── src/
-│   │   ├── components/             # Header, Vouchers, Telemetry, Roadmap
+│   │   ├── components/             # Header, Vouchers, Telemetry, Roadmap, WalletModal
 │   │   ├── utils/                  # Stellar SDK & Cryptographic Utilities
 │   │   │   └── __tests__/          # Vitest Frontend Tests (4/4 Pass)
 │   │   ├── App.tsx
@@ -138,7 +157,7 @@ padalax/
 
 ## 🚀 RiseIn Belt Roadmap Summary
 * ⚪ **Level 1 (White Belt):** Stellar network fundamentals, Friendbot funding, and payment memos.
-* 🟡 **Level 2 (Yellow Belt):** Soroban Rust contract scaffolding, types, and WASM compilation.
+* 🟡 **Level 2 (Yellow Belt):** Soroban Rust contract scaffolding, types, Multi-Wallet modal, and WASM compilation.
 * 🟠 **Level 3 (Orange Belt):** Persistent state, SHA-256 hashlock authorization, time-locked refunds, 6 unit tests, and live Testnet deployment (`CATUXAJ7Q...`).
 * 🟢 **Level 4 (Green Belt):** Web3 React + Vite PWA with Freighter wallet integration on Vercel.
 * 🔵 **Level 5 (Blue Belt):** Dynamic QR vouchers, real-time PHP conversion, and live telemetry.
