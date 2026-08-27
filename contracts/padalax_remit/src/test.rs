@@ -161,3 +161,75 @@ fn test_refund_before_expiration_fails() {
     env.ledger().set_timestamp(2000);
     client.refund_remittance(&sender, &remittance_id);
 }
+
+#[test]
+#[should_panic(expected = "Unauthorized: Only original sender can refund")]
+fn test_unauthorized_sender_cannot_refund() {
+    let env = Env::default();
+    env.mock_all_auths();
+    env.ledger().set_timestamp(1000);
+
+    let contract_id = env.register_contract(None, PadalaXRemitContract);
+    let client = PadalaXRemitContractClient::new(&env, &contract_id);
+
+    let original_sender = Address::generate(&env);
+    let malicious_attacker = Address::generate(&env);
+    let remittance_id: u32 = 88005;
+    let amount: i128 = 300_0000000;
+    let expiry_timestamp: u64 = 3000;
+    let memo = String::from_str(&env, "Unauthorized Refund Attack");
+
+    let secret_preimage = Bytes::from_slice(&env, b"SECRET_KEY_2026");
+    let claim_hash: BytesN<32> = env.crypto().sha256(&secret_preimage).into();
+
+    client.create_remittance(
+        &original_sender,
+        &remittance_id,
+        &claim_hash,
+        &amount,
+        &expiry_timestamp,
+        &memo,
+    );
+
+    // Fast-forward past expiry
+    env.ledger().set_timestamp(3001);
+
+    // Attacker tries to refund funds they did not send -> Panic
+    client.refund_remittance(&malicious_attacker, &remittance_id);
+}
+
+#[test]
+#[should_panic(expected = "Remittance has expired; cannot be claimed")]
+fn test_cannot_claim_expired_remittance() {
+    let env = Env::default();
+    env.mock_all_auths();
+    env.ledger().set_timestamp(1000);
+
+    let contract_id = env.register_contract(None, PadalaXRemitContract);
+    let client = PadalaXRemitContractClient::new(&env, &contract_id);
+
+    let sender = Address::generate(&env);
+    let recipient = Address::generate(&env);
+    let remittance_id: u32 = 88006;
+    let amount: i128 = 200_0000000;
+    let expiry_timestamp: u64 = 2500;
+    let memo = String::from_str(&env, "Expired Claim Attempt");
+
+    let secret_preimage = Bytes::from_slice(&env, b"VALID_CODE");
+    let claim_hash: BytesN<32> = env.crypto().sha256(&secret_preimage).into();
+
+    client.create_remittance(
+        &sender,
+        &remittance_id,
+        &claim_hash,
+        &amount,
+        &expiry_timestamp,
+        &memo,
+    );
+
+    // Advance time past expiry
+    env.ledger().set_timestamp(2600);
+
+    // Recipient tries to claim after expiry -> Panic
+    client.claim_remittance(&recipient, &remittance_id, &secret_preimage);
+}
