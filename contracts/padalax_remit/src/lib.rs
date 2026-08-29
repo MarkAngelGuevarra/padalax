@@ -1,7 +1,7 @@
 #![no_std]
 use soroban_sdk::{
-    contract, contracterror, contractimpl, contracttype, symbol_short, Address, Bytes, BytesN, Env,
-    String, Symbol,
+    contract, contracterror, contractimpl, contracttype, symbol_short, token, Address, Bytes,
+    BytesN, Env, String, Symbol,
 };
 
 #[contracterror]
@@ -35,6 +35,7 @@ pub struct Remittance {
     pub id: u32,
     pub sender: Address,
     pub recipient: Address,
+    pub token: Address,
     pub claim_hash: BytesN<32>,
     pub amount: i128,
     pub expiry_timestamp: u64,
@@ -53,15 +54,20 @@ const EVENT_CREATE: Symbol = symbol_short!("created");
 const EVENT_CLAIM: Symbol = symbol_short!("claimed");
 const EVENT_REFUND: Symbol = symbol_short!("refunded");
 
+// Storage TTL configuration (Ledger sequence bumps)
+const PERSISTENT_BUMP_AMOUNT: u32 = 100_000;
+const PERSISTENT_LIFETIME_THRESHOLD: u32 = 50_000;
+
 #[contract]
 pub struct PadalaXRemitContract;
 
 #[contractimpl]
 impl PadalaXRemitContract {
-    /// 1. Create a new locked remittance voucher
+    /// 1. Create a new locked remittance voucher and transfer tokens into contract escrow
     pub fn create_remittance(
         env: Env,
         sender: Address,
+        token: Address,
         id: u32,
         claim_hash: BytesN<32>,
         amount: i128,
@@ -84,11 +90,16 @@ impl PadalaXRemitContract {
             panic!("Remittance ID already exists");
         }
 
+        // Lock funds into contract escrow
+        let token_client = token::Client::new(&env, &token);
+        token_client.transfer(&sender, &env.current_contract_address(), &amount);
+
         // Initialize with sender as placeholder recipient until claimed
         let remittance = Remittance {
             id,
             sender: sender.clone(),
             recipient: sender.clone(),
+            token,
             claim_hash,
             amount,
             expiry_timestamp,
@@ -97,6 +108,9 @@ impl PadalaXRemitContract {
         };
 
         env.storage().persistent().set(&key, &remittance);
+        env.storage()
+            .persistent()
+            .extend_ttl(&key, PERSISTENT_LIFETIME_THRESHOLD, PERSISTENT_BUMP_AMOUNT);
 
         // Update Total Volume
         let total_vol: i128 = env
@@ -107,6 +121,11 @@ impl PadalaXRemitContract {
         env.storage()
             .persistent()
             .set(&DataKey::TotalVolume, &(total_vol + amount));
+        env.storage().persistent().extend_ttl(
+            &DataKey::TotalVolume,
+            PERSISTENT_LIFETIME_THRESHOLD,
+            PERSISTENT_BUMP_AMOUNT,
+        );
 
         // Emit Creation Event
         env.events()
@@ -115,7 +134,7 @@ impl PadalaXRemitContract {
         id
     }
 
-    /// 2. Claim remittance using secret preimage code
+    /// 2. Claim remittance using secret preimage code and transfer escrowed funds to recipient
     pub fn claim_remittance(
         env: Env,
         recipient: Address,
@@ -146,10 +165,17 @@ impl PadalaXRemitContract {
             panic!("Invalid claim code preimage");
         }
 
+        // Transfer funds from contract escrow to recipient
+        let token_client = token::Client::new(&env, &remittance.token);
+        token_client.transfer(&env.current_contract_address(), &recipient, &remittance.amount);
+
         // Update state to Claimed
         remittance.status = RemittanceStatus::Claimed;
         remittance.recipient = recipient.clone();
         env.storage().persistent().set(&key, &remittance);
+        env.storage()
+            .persistent()
+            .extend_ttl(&key, PERSISTENT_LIFETIME_THRESHOLD, PERSISTENT_BUMP_AMOUNT);
 
         // Emit Claim Event
         env.events()
@@ -182,9 +208,16 @@ impl PadalaXRemitContract {
             panic!("Remittance has not expired yet");
         }
 
+        // Transfer funds from contract escrow back to sender
+        let token_client = token::Client::new(&env, &remittance.token);
+        token_client.transfer(&env.current_contract_address(), &sender, &remittance.amount);
+
         // Update state to Refunded
         remittance.status = RemittanceStatus::Refunded;
         env.storage().persistent().set(&key, &remittance);
+        env.storage()
+            .persistent()
+            .extend_ttl(&key, PERSISTENT_LIFETIME_THRESHOLD, PERSISTENT_BUMP_AMOUNT);
 
         // Emit Refund Event
         env.events()

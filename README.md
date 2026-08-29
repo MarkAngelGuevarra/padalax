@@ -49,9 +49,9 @@ npm run level1 --prefix scripts
 ```
 
 ### Verified Horizon Payment Output:
-* **Transaction Hash:** `0ca3a96342e58297fcacaa3abce4e02d47ad54a453b7a6cd6b516272f22d4c3d`
-* **Ledger Number:** `4364403`
-* **Explorer Link:** [https://stellar.expert/explorer/testnet/tx/0ca3a96342e58297fcacaa3abce4e02d47ad54a453b7a6cd6b516272f22d4c3d](https://stellar.expert/explorer/testnet/tx/0ca3a96342e58297fcacaa3abce4e02d47ad54a453b7a6cd6b516272f22d4c3d)
+* **Transaction Hash:** `7f82b338a582f367c13bb066f17493ff5b2520e32cc35e2daf66812ddea46eda`
+* **Ledger Number:** `4402986`
+* **Explorer Link:** [https://stellar.expert/explorer/testnet/tx/7f82b338a582f367c13bb066f17493ff5b2520e32cc35e2daf66812ddea46eda](https://stellar.expert/explorer/testnet/tx/7f82b338a582f367c13bb066f17493ff5b2520e32cc35e2daf66812ddea46eda)
 
 ---
 
@@ -71,12 +71,13 @@ Set up Soroban smart contract development environment, scaffold Rust smart contr
 ## 🟠 Level 3 — Orange Belt Deliverables (Production Smart Contract & Testing)
 
 ### Advanced Smart Contract Architecture
-1. **Persistent State Modeling:** Escrows are isolated under `DataKey::Remittance(u32)` and tracked globally via `DataKey::TotalVolume`.
-2. **Cryptographic SHA-256 HashLock Preimage:** Claimers must supply the exact plaintext secret code whose SHA-256 hash matches the escrow parameter:
+1. **Real Token Escrow (`token::Client`):** Executes on-chain token transfers between sender, contract escrow address (`env.current_contract_address()`), and recipient upon claim/refund.
+2. **Persistent State & TTL Management:** Escrows are isolated under `DataKey::Remittance(u32)` with automated `extend_ttl` bumps to prevent state archival on Testnet.
+3. **Cryptographic SHA-256 HashLock Preimage:** Claimers must supply the exact plaintext secret code whose SHA-256 hash matches the escrow parameter:
    $$\text{SHA-256}(\text{claim\_preimage}) == \text{remittance.claim\_hash}$$
-3. **Time-Locked Autonomous Refunds:** Senders retain 100% refund authority strictly after expiration timestamp (`current_time > expiry_timestamp`).
-4. **Access Control (`require_auth`):** Enforced on senders during creation/refund and on claimers during payout.
-5. **Real-Time Event Streaming:** Publishes structured event telemetry under `TOPIC_REMIT` (`created`, `claimed`, `refunded`).
+4. **Time-Locked Autonomous Refunds:** Senders retain 100% refund authority strictly after expiration timestamp (`current_time > expiry_timestamp`).
+5. **Access Control (`require_auth`):** Enforced on senders during creation/refund and on claimers during payout.
+6. **Real-Time Event Streaming:** Publishes structured event telemetry under `TOPIC_REMIT` (`created`, `claimed`, `refunded`).
 
 ### How to Run Smart Contract Unit Tests:
 ```bash
@@ -93,7 +94,7 @@ test test::test_cannot_claim_expired_remittance - should panic ... ok
 test test::test_unauthorized_sender_cannot_refund - should panic ... ok
 test test::test_claim_with_wrong_preimage_panics - should panic ... ok
 
-test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; finished in 0.54s
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.26s
 ```
 
 ---
@@ -123,18 +124,18 @@ npm run build  # Compiles production bundle for Vercel
 padalax/
 ├── .github/
 │   └── workflows/
-│       └── ci.yml                  # GitHub Actions CI/CD Pipeline
+│       └── ci.yml                  # GitHub Actions CI/CD Pipeline (Rust + Vitest + Build)
 ├── assets/
 │   └── screenshots/
 │       ├── desktop_ui.png          # Desktop Web3 dApp Screenshot
 │       └── mobile_ui.png           # Mobile Responsive UI Screenshot
 ├── contracts/
 │   └── padalax_remit/
-│       ├── Cargo.toml
+│       ├── Cargo.toml              # Soroban SDK 21.0.0 Configuration
 │       └── src/
-│           ├── lib.rs              # Soroban Smart Contract (Levels 2 & 3)
-│           └── test.rs             # 6 Automated Unit Tests (100% Pass)
-├── frontend/                        # Web3 PWA (React + Vite + Tailwind)
+│           ├── lib.rs              # Soroban Token Escrow Contract (Levels 2 & 3)
+│           └── test.rs             # 6 Automated Unit Tests with Token Balances (100% Pass)
+├── frontend/                       # Web3 PWA (React + Vite + Tailwind)
 │   ├── src/
 │   │   ├── components/             # Header, Vouchers, Telemetry, Roadmap, WalletModal
 │   │   ├── utils/                  # Stellar SDK & Cryptographic Utilities
@@ -149,6 +150,7 @@ padalax/
 │   ├── deploy_and_interact.js      # Level 3 Testnet Deployment Verifier
 │   └── package.json
 ├── Cargo.toml                      # Root Cargo Workspace
+├── package.json                    # Root Workspace Script Runner
 ├── project_proposal.md             # RiseIn Idea Submission Document
 └── README.md                       # Master Documentation
 ```
@@ -158,7 +160,7 @@ padalax/
 ## 🚀 RiseIn Belt Roadmap Summary
 * ⚪ **Level 1 (White Belt):** Stellar network fundamentals, Friendbot funding, and payment memos.
 * 🟡 **Level 2 (Yellow Belt):** Soroban Rust contract scaffolding, types, Multi-Wallet modal, and WASM compilation.
-* 🟠 **Level 3 (Orange Belt):** Persistent state, SHA-256 hashlock authorization, time-locked refunds, 6 unit tests, and live Testnet deployment (`CATUXAJ7Q...`).
+* 🟠 **Level 3 (Orange Belt):** Real token escrow, persistent state TTL, SHA-256 hashlocks, time-locked refunds, 6 unit tests, and live Testnet deployment (`CATUXAJ7Q...`).
 * 🟢 **Level 4 (Green Belt):** Web3 React + Vite PWA with Freighter wallet integration on Vercel.
 * 🔵 **Level 5 (Blue Belt):** Dynamic QR vouchers, real-time PHP conversion, and live telemetry.
 * ⚫ **Level 6 (Black Belt):** Stellar Mainnet deployment and gasless fee-bump relayers.

@@ -1,7 +1,21 @@
 #![cfg(test)]
 
 use super::*;
-use soroban_sdk::{testutils::{Address as _, Ledger}, Bytes, Env, String};
+use soroban_sdk::{
+    testutils::{Address as _, Ledger},
+    token, Address, Bytes, Env, String,
+};
+
+fn create_token_contract<'a>(
+    env: &Env,
+    admin: &Address,
+) -> (token::Client<'a>, token::StellarAssetClient<'a>) {
+    let contract_id = env.register_stellar_asset_contract_v2(admin.clone());
+    (
+        token::Client::new(env, &contract_id.address()),
+        token::StellarAssetClient::new(env, &contract_id.address()),
+    )
+}
 
 #[test]
 fn test_create_and_claim_remittance_success() {
@@ -14,6 +28,9 @@ fn test_create_and_claim_remittance_success() {
     let contract_id = env.register_contract(None, PadalaXRemitContract);
     let client = PadalaXRemitContractClient::new(&env, &contract_id);
 
+    let token_admin = Address::generate(&env);
+    let (token_client, token_admin_client) = create_token_contract(&env, &token_admin);
+
     let sender = Address::generate(&env);
     let recipient = Address::generate(&env);
 
@@ -22,13 +39,18 @@ fn test_create_and_claim_remittance_success() {
     let expiry_timestamp: u64 = 5000; // 4000 seconds later
     let memo = String::from_str(&env, "Monthly OFW Allowance");
 
+    // Mint tokens to sender
+    token_admin_client.mint(&sender, &amount);
+    assert_eq!(token_client.balance(&sender), amount);
+
     // Secret claim code: "SECRET_PIN_2026"
     let secret_preimage = Bytes::from_slice(&env, b"SECRET_PIN_2026");
     let claim_hash: BytesN<32> = env.crypto().sha256(&secret_preimage).into();
 
-    // 1. Create Remittance
+    // 1. Create Remittance (Locks token into contract escrow)
     let created_id = client.create_remittance(
         &sender,
+        &token_client.address,
         &remittance_id,
         &claim_hash,
         &amount,
@@ -37,10 +59,15 @@ fn test_create_and_claim_remittance_success() {
     );
     assert_eq!(created_id, remittance_id);
 
+    // Verify token was transferred from sender to contract
+    assert_eq!(token_client.balance(&sender), 0);
+    assert_eq!(token_client.balance(&contract_id), amount);
+
     // Verify Pending State
     let initial_remittance = client.get_remittance(&remittance_id);
     assert_eq!(initial_remittance.status, RemittanceStatus::Pending);
     assert_eq!(initial_remittance.amount, amount);
+    assert_eq!(initial_remittance.token, token_client.address);
     assert_eq!(client.get_total_volume(), amount);
 
     // Advance time to 2000 (before expiry 5000)
@@ -49,6 +76,10 @@ fn test_create_and_claim_remittance_success() {
     // 2. Claim Remittance with Secret Preimage
     let claim_success = client.claim_remittance(&recipient, &remittance_id, &secret_preimage);
     assert!(claim_success);
+
+    // Verify token was transferred from contract to recipient
+    assert_eq!(token_client.balance(&contract_id), 0);
+    assert_eq!(token_client.balance(&recipient), amount);
 
     // Verify Claimed State
     let claimed_remittance = client.get_remittance(&remittance_id);
@@ -66,6 +97,9 @@ fn test_claim_with_wrong_preimage_panics() {
     let contract_id = env.register_contract(None, PadalaXRemitContract);
     let client = PadalaXRemitContractClient::new(&env, &contract_id);
 
+    let token_admin = Address::generate(&env);
+    let (token_client, token_admin_client) = create_token_contract(&env, &token_admin);
+
     let sender = Address::generate(&env);
     let recipient = Address::generate(&env);
 
@@ -74,11 +108,14 @@ fn test_claim_with_wrong_preimage_panics() {
     let expiry_timestamp: u64 = 5000;
     let memo = String::from_str(&env, "Test Wrong Preimage");
 
+    token_admin_client.mint(&sender, &amount);
+
     let secret_preimage = Bytes::from_slice(&env, b"REAL_SECRET");
     let claim_hash: BytesN<32> = env.crypto().sha256(&secret_preimage).into();
 
     client.create_remittance(
         &sender,
+        &token_client.address,
         &remittance_id,
         &claim_hash,
         &amount,
@@ -100,17 +137,23 @@ fn test_refund_after_expiration_success() {
     let contract_id = env.register_contract(None, PadalaXRemitContract);
     let client = PadalaXRemitContractClient::new(&env, &contract_id);
 
+    let token_admin = Address::generate(&env);
+    let (token_client, token_admin_client) = create_token_contract(&env, &token_admin);
+
     let sender = Address::generate(&env);
     let remittance_id: u32 = 88003;
     let amount: i128 = 500_0000000;
     let expiry_timestamp: u64 = 3000;
     let memo = String::from_str(&env, "Emergency Medical Aid");
 
+    token_admin_client.mint(&sender, &amount);
+
     let secret_preimage = Bytes::from_slice(&env, b"UNCLAIMED_CODE");
     let claim_hash: BytesN<32> = env.crypto().sha256(&secret_preimage).into();
 
     client.create_remittance(
         &sender,
+        &token_client.address,
         &remittance_id,
         &claim_hash,
         &amount,
@@ -118,12 +161,19 @@ fn test_refund_after_expiration_success() {
         &memo,
     );
 
+    assert_eq!(token_client.balance(&contract_id), amount);
+    assert_eq!(token_client.balance(&sender), 0);
+
     // Fast-forward past expiry: timestamp 3001
     env.ledger().set_timestamp(3001);
 
     // Trigger Refund
     let refund_success = client.refund_remittance(&sender, &remittance_id);
     assert!(refund_success);
+
+    // Verify token was refunded back to sender
+    assert_eq!(token_client.balance(&contract_id), 0);
+    assert_eq!(token_client.balance(&sender), amount);
 
     let refunded_remittance = client.get_remittance(&remittance_id);
     assert_eq!(refunded_remittance.status, RemittanceStatus::Refunded);
@@ -139,17 +189,23 @@ fn test_refund_before_expiration_fails() {
     let contract_id = env.register_contract(None, PadalaXRemitContract);
     let client = PadalaXRemitContractClient::new(&env, &contract_id);
 
+    let token_admin = Address::generate(&env);
+    let (token_client, token_admin_client) = create_token_contract(&env, &token_admin);
+
     let sender = Address::generate(&env);
     let remittance_id: u32 = 88004;
     let amount: i128 = 150_0000000;
     let expiry_timestamp: u64 = 5000;
     let memo = String::from_str(&env, "Cannot Refund Early");
 
+    token_admin_client.mint(&sender, &amount);
+
     let secret_preimage = Bytes::from_slice(&env, b"SECRET");
     let claim_hash: BytesN<32> = env.crypto().sha256(&secret_preimage).into();
 
     client.create_remittance(
         &sender,
+        &token_client.address,
         &remittance_id,
         &claim_hash,
         &amount,
@@ -172,6 +228,9 @@ fn test_unauthorized_sender_cannot_refund() {
     let contract_id = env.register_contract(None, PadalaXRemitContract);
     let client = PadalaXRemitContractClient::new(&env, &contract_id);
 
+    let token_admin = Address::generate(&env);
+    let (token_client, token_admin_client) = create_token_contract(&env, &token_admin);
+
     let original_sender = Address::generate(&env);
     let malicious_attacker = Address::generate(&env);
     let remittance_id: u32 = 88005;
@@ -179,11 +238,14 @@ fn test_unauthorized_sender_cannot_refund() {
     let expiry_timestamp: u64 = 3000;
     let memo = String::from_str(&env, "Unauthorized Refund Attack");
 
+    token_admin_client.mint(&original_sender, &amount);
+
     let secret_preimage = Bytes::from_slice(&env, b"SECRET_KEY_2026");
     let claim_hash: BytesN<32> = env.crypto().sha256(&secret_preimage).into();
 
     client.create_remittance(
         &original_sender,
+        &token_client.address,
         &remittance_id,
         &claim_hash,
         &amount,
@@ -208,6 +270,9 @@ fn test_cannot_claim_expired_remittance() {
     let contract_id = env.register_contract(None, PadalaXRemitContract);
     let client = PadalaXRemitContractClient::new(&env, &contract_id);
 
+    let token_admin = Address::generate(&env);
+    let (token_client, token_admin_client) = create_token_contract(&env, &token_admin);
+
     let sender = Address::generate(&env);
     let recipient = Address::generate(&env);
     let remittance_id: u32 = 88006;
@@ -215,11 +280,14 @@ fn test_cannot_claim_expired_remittance() {
     let expiry_timestamp: u64 = 2500;
     let memo = String::from_str(&env, "Expired Claim Attempt");
 
+    token_admin_client.mint(&sender, &amount);
+
     let secret_preimage = Bytes::from_slice(&env, b"VALID_CODE");
     let claim_hash: BytesN<32> = env.crypto().sha256(&secret_preimage).into();
 
     client.create_remittance(
         &sender,
+        &token_client.address,
         &remittance_id,
         &claim_hash,
         &amount,
