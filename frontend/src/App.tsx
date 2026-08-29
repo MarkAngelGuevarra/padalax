@@ -266,10 +266,10 @@ export const App: React.FC = () => {
           <div>
             <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">Stellar RiseIn Submission</span>
             <h4 className="text-base sm:text-lg font-bold text-white mt-0.5">
-              Levels 1, 2, 3, 4 & 5 Fully Implemented
+              Levels 1, 2 & 3 Completed & Ready for Review
             </h4>
             <p className="text-xs text-slate-400 mt-1">
-              Includes Multi-Wallet Modal, Soroban Contract Deploy, 6 Cargo Tests, CI/CD Workflow, and QR Vouchers.
+              Includes Stellar SDK Payments, Soroban Contract with Token Escrow, 6 Cargo Tests, CI/CD Pipeline, and Testnet Deployment.
             </p>
           </div>
 

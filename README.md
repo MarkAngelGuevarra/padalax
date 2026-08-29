@@ -157,11 +157,12 @@ padalax/
 
 ---
 
-## 🚀 RiseIn Belt Roadmap Summary
-* ⚪ **Level 1 (White Belt):** Stellar network fundamentals, Friendbot funding, and payment memos.
-* 🟡 **Level 2 (Yellow Belt):** Soroban Rust contract scaffolding, types, Multi-Wallet modal, and WASM compilation.
-* 🟠 **Level 3 (Orange Belt):** Real token escrow, persistent state TTL, SHA-256 hashlocks, time-locked refunds, 6 unit tests, and live Testnet deployment (`CATUXAJ7Q...`).
-* 🟢 **Level 4 (Green Belt):** Web3 React + Vite PWA with Freighter wallet integration on Vercel.
-* 🔵 **Level 5 (Blue Belt):** Dynamic QR vouchers, real-time PHP conversion, and live telemetry.
-* ⚫ **Level 6 (Black Belt):** Stellar Mainnet deployment and gasless fee-bump relayers.
-* 🏆 **Level 7 (Master Track):** Live SEP-24 fiat off-ramps connecting to GCash and Maya.
+## 🚀 RiseIn Belt Roadmap Status
+
+* ⚪ **Level 1 (White Belt) — ✅ SUBMITTED FOR EVALUATION:** Stellar network fundamentals, Friendbot funding, account state verification, and payment memos ([Payment Tx `7f82b338...`](https://stellar.expert/explorer/testnet/tx/7f82b338a582f367c13bb066f17493ff5b2520e32cc35e2daf66812ddea46eda)).
+* 🟡 **Level 2 (Yellow Belt) — ✅ SUBMITTED FOR EVALUATION:** Soroban Rust contract scaffolding, types, Multi-Wallet error handling, and WASM compilation (`b7ba4c0d...`).
+* 🟠 **Level 3 (Orange Belt) — ✅ SUBMITTED FOR EVALUATION:** Real token escrow (`token::Client`), persistent state TTL, SHA-256 hashlocks, time-locked refunds, 6 unit tests (100% pass), and live Testnet deployment ([Contract `CATUXAJ7Q...`](https://stellar.expert/explorer/testnet/contract/CATUXAJ7QPHA5AQM3F3D2HXAFN2BDEZHRTXUL2742XT6LVA2JRO7S3DM)).
+* 🟢 **Level 4 (Green Belt) — ⏳ UPCOMING (Next Phase):** Web3 React + Vite PWA with Freighter wallet integration on Vercel (pending Level 1–3 evaluation).
+* 🔵 **Level 5 (Blue Belt) — ⏳ UPCOMING (Next Phase):** Dynamic QR vouchers, real-time PHP conversion, and live telemetry stream.
+* ⚫ **Level 6 (Black Belt) — ⏳ UPCOMING (Next Phase):** Stellar Mainnet deployment and gasless fee-bump relayers.
+* 🏆 **Level 7 (Master Track) — ⏳ UPCOMING (Next Phase):** Live SEP-24 fiat off-ramps connecting to GCash and Maya.
