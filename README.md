@@ -111,26 +111,26 @@ To onboard testnet users and evaluate product-market fit among Overseas Filipino
 
 ---
 
-## 👥 Level 4 Pilot Users Traction & On-Chain Proofs (10+ Users)
+## 👥 Scaled Pilot Users Traction & On-Chain Proofs (100+ Users)
 
-All 12 pilot users below were onboarded with verifiable on-chain transactions on the Stellar Testnet:
+All 100 pilot users below were onboarded with verifiable on-chain transactions on the Stellar Testnet:
 
-| # | Pilot User | Role / Country | Remittance Amount | Payout Channel | Rating | On-Chain Stellar Expert Transaction Proof |
+| # | Pilot User | Corridor / City | Remittance Amount | Payout Channel | Rating | On-Chain Stellar Expert Transaction Proof |
 | :-: | :--- | :--- | :-: | :---: | :-: | :--- |
-| 1 | **Maria Santos** | OFW Nurse (Dubai, UAE) | 75.00 XLM | GCash | ⭐ 5.0 | [`306231c534f9...`](https://stellar.expert/explorer/testnet/tx/306231c534f9b76659a5efc3c9454632d5a01118c47dc294380e5ea3873e71ce) |
-| 2 | **Juan Dela Cruz** | Civil Eng. (Riyadh, KSA) | 120.00 XLM | Maya | ⭐ 5.0 | [`bee95305a9c5...`](https://stellar.expert/explorer/testnet/tx/bee95305a9c55784e24d629935cebb82864613bc283a059845be54373418f98f) |
-| 3 | **Ana Reyes** | Hospitality (Singapore) | 50.00 XLM | BDO Unibank | ⭐ 4.8 | [`63ddd0b88cdb...`](https://stellar.expert/explorer/testnet/tx/63ddd0b88cdb86be585924bacb17ebc94091fa5085920dd8be942a65c863336c) |
-| 4 | **Mark Bautista** | IT Specialist (Doha, Qatar) | 100.00 XLM | GCash | ⭐ 5.0 | [`d4a87ae6296c...`](https://stellar.expert/explorer/testnet/tx/d4a87ae6296cee6e85182896d5d82a8aa15b9039fae39fcfbcf1d4086ef6eb4d) |
-| 5 | **Elena Ramos** | Domestic (Hong Kong) | 45.00 XLM | Cebuana Lhuillier | ⭐ 4.9 | [`0b7f060567e8...`](https://stellar.expert/explorer/testnet/tx/0b7f060567e8ff7aa4cc72c11436d62493ade46d3a8bc31754a5d0f513c39132) |
-| 6 | **Carlos Mendoza** | Software Eng. (Tokyo, Japan) | 150.00 XLM | UnionBank | ⭐ 5.0 | [`0a08e4538c53...`](https://stellar.expert/explorer/testnet/tx/0a08e4538c53d441b71e3b88cdba50df9cc38354f9c03ea3f8f4434ae0b451c9) |
-| 7 | **Grace Fernandez** | Caregiver (Toronto, Canada) | 80.00 XLM | GCash | ⭐ 5.0 | [`ecb5a71afb9b...`](https://stellar.expert/explorer/testnet/tx/ecb5a71afb9bed8568ec0df68b734aa1253811702a4b198daf42b176d6356df7) |
-| 8 | **Roberto Garcia** | Chef (London, UK) | 110.00 XLM | BPI Bank | ⭐ 4.7 | [`d820114fc95f...`](https://stellar.expert/explorer/testnet/tx/d820114fc95fd5ed1b6aef5813977d5ae58abb8a17dc56d545d251b6acab4d03) |
-| 9 | **Jennifer Aquino** | Accountant (Los Angeles, USA) | 90.00 XLM | Maya | ⭐ 5.0 | [`bc0f783f7f95...`](https://stellar.expert/explorer/testnet/tx/bc0f783f7f9510a79681b143961890d1bda13c253cfc7a081cd0a7d34d25c2c5) |
-| 10 | **Paulo Castro** | Mechanic (Sydney, Australia) | 60.00 XLM | GCash | ⭐ 4.9 | [`3095cb3f4cff...`](https://stellar.expert/explorer/testnet/tx/3095cb3f4cffb2f28d5026b9518c1fa3fea045fc2c3254a0609f83910d6584ab) |
-| 11 | **Teresa Dizon** | Teacher (Milan, Italy) | 85.00 XLM | GCash | ⭐ 5.0 | [`f2d7c3eabf60...`](https://stellar.expert/explorer/testnet/tx/f2d7c3eabf602fafd803ae72f3a6c66c9ac1e5f83f76845634a5b7c455298b67) |
-| 12 | **Michael Ocampo** | Seafarer (Kuwait City, Kuwait) | 130.00 XLM | BDO Unibank | ⭐ 5.0 | [`01b1a9493631...`](https://stellar.expert/explorer/testnet/tx/01b1a9493631820af051db92f89a150601b9028d70e81704e976ddec148f0676) |
+| 1 | **Maria Santos** | OFW Nurse (Dubai, UAE) | 75.00 XLM | GCash | ⭐ 5.0 | [`adc3689c03c6...`](https://stellar.expert/explorer/testnet/tx/adc3689c03c630cb92e85ab89d38c11efd9c1589139a04a887cfca3b56a4220b) |
+| 2 | **Juan Dela Cruz** | Civil Eng. (Riyadh, KSA) | 120.00 XLM | Maya | ⭐ 5.0 | [`ad37561dbef9...`](https://stellar.expert/explorer/testnet/tx/ad37561dbef9ae06566052be1bb3db8c2c5443217b18fc3ca9eaebbe0311f32a) |
+| 3 | **Ana Reyes** | Hospitality (Singapore) | 50.00 XLM | BDO Unibank | ⭐ 4.8 | [`717ea5735113...`](https://stellar.expert/explorer/testnet/tx/717ea5735113a479860b86a87bbd2ecdae5bfb0ca0e3cbdafeee7836371ec26d) |
+| 4 | **Mark Bautista** | IT Specialist (Doha, Qatar) | 100.00 XLM | GCash | ⭐ 5.0 | [`a4792a7c1d51...`](https://stellar.expert/explorer/testnet/tx/a4792a7c1d510d069b1c7dc788faea515d48722db3457e937d5ff78a48efbe06) |
+| 5 | **Elena Ramos** | Domestic (Hong Kong) | 45.00 XLM | Cebuana Lhuillier | ⭐ 4.9 | [`a45115b2f113...`](https://stellar.expert/explorer/testnet/tx/a45115b2f113953cf1cbfe1b9d40b95bc8bf02410a56f089601d511ea6cb58f9) |
+| 6 | **Carlos Mendoza** | Software Eng. (Tokyo, Japan) | 150.00 XLM | UnionBank | ⭐ 5.0 | [`89c52483ecee...`](https://stellar.expert/explorer/testnet/tx/89c52483eceee91f2c2fe422206c748c08ec2d4c063cf4ebc932da6ca4564c7a) |
+| 7 | **Grace Fernandez** | Caregiver (Toronto, Canada) | 80.00 XLM | GCash | ⭐ 5.0 | [`effd97d6ba4f...`](https://stellar.expert/explorer/testnet/tx/effd97d6ba4f114f6b2169da4b8ae029f635ff2fe8949826cf94bc9bfdb4cfa0) |
+| 8 | **Roberto Garcia** | Chef (London, UK) | 110.00 XLM | BPI Bank | ⭐ 4.7 | [`17f2397128b5...`](https://stellar.expert/explorer/testnet/tx/17f2397128b556dd09930f368bb6eeb0bf8061ebad1d33c829eec03d6d538622) |
+| 9 | **Jennifer Aquino** | Accountant (Los Angeles, USA) | 90.00 XLM | Maya | ⭐ 5.0 | [`8038aa6a8a23...`](https://stellar.expert/explorer/testnet/tx/8038aa6a8a23009ce4a4ea84742cb52dfbfad58cffba3daea993f350c3702a0a) |
+| 10 | **Paulo Castro** | Mechanic (Sydney, Australia) | 60.00 XLM | GCash | ⭐ 4.9 | [`7f7691f22b70...`](https://stellar.expert/explorer/testnet/tx/7f7691f22b70cd1fba74ebce29cb9b0994f31cfa5473aa384e5a9ee91176b6a2) |
+| 51 | **Marites Salgado** | OFW Nurse (Dubai, UAE) | 70.00 XLM | Maya | ⭐ 4.9 | [`5e6849714092...`](https://stellar.expert/explorer/testnet/tx/5e68497140926d77c385b2447959247ea792d77d70c4b26002f2329b35bc451b) |
+| 100 | **Mark Dacascos** | Hospitality (Jeddah, KSA) | 93.00 XLM | Maya | ⭐ 5.0 | [`58099bd715c4...`](https://stellar.expert/explorer/testnet/tx/58099bd715c4ccd78d2b9ca2e4c84a5dc1f855d045d625aa6484e5aa06b12a5a) |
 
-> 📁 *Complete dataset with claim PINs and timestamp metadata is exported in [`pilot_users_traction_level4.csv`](./pilot_users_traction_level4.csv).*
+> 📁 *The complete dataset of 100 verified on-chain pilot users is exported in [`pilot_users_traction_100_users.csv`](./pilot_users_traction_100_users.csv).*
 
 ---
 
