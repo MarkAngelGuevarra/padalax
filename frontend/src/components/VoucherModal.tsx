@@ -124,35 +124,64 @@ export const VoucherModal: React.FC<VoucherModalProps> = ({ voucher, onClose }) 
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-6 flex flex-col sm:flex-row gap-3">
-          <button
-            onClick={() => copyToClipboard(shareText, 'msg')}
-            className="flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold text-xs sm:text-sm hover:from-cyan-400 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/20 active:scale-95"
-          >
-            {copiedMessage ? (
-              <>
-                <Check className="w-4 h-4 text-white" />
-                <span>Copied Share Message!</span>
-              </>
-            ) : (
-              <>
-                <Share2 className="w-4 h-4" />
-                <span>Share via Viber / SMS / WhatsApp</span>
-              </>
-            )}
-          </button>
+        <div className="mt-5 space-y-2.5">
+          <div className="flex flex-col sm:flex-row gap-2">
+            <button
+              onClick={() => copyToClipboard(shareText, 'msg')}
+              className="flex-1 flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold text-xs sm:text-sm hover:from-cyan-400 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/20 active:scale-95"
+            >
+              {copiedMessage ? (
+                <>
+                  <Check className="w-4 h-4 text-white" />
+                  <span>Copied Share Message!</span>
+                </>
+              ) : (
+                <>
+                  <Share2 className="w-4 h-4" />
+                  <span>Copy Share Text</span>
+                </>
+              )}
+            </button>
 
-          {voucher.txHash && (
             <a
-              href={`${STELLAR_EXPERT_TESTNET}/tx/${voucher.txHash}`}
+              href={`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center space-x-1.5 py-3 px-4 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800 text-xs font-semibold transition-all"
+              className="flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition-all shadow-md"
             >
-              <span>Ledger Tx</span>
-              <ExternalLink className="w-3.5 h-3.5" />
+              <span>WhatsApp</span>
             </a>
-          )}
+
+            <a
+              href={`https://t.me/share/url?url=${encodeURIComponent(claimUrl)}&text=${encodeURIComponent(`PadalaX Remittance Voucher (₱${voucher.amountPhp.toLocaleString()}): Claim PIN is ${voucher.claimCode}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold transition-all shadow-md"
+            >
+              <span>Telegram</span>
+            </a>
+          </div>
+
+          <div className="flex items-center justify-between pt-2 border-t border-slate-800/80 text-[11px]">
+            <button
+              onClick={() => window.print()}
+              className="text-slate-400 hover:text-cyan-300 underline transition-colors"
+            >
+              🖨️ Print / Save Official Receipt
+            </button>
+
+            {voucher.txHash && (
+              <a
+                href={`${STELLAR_EXPERT_TESTNET}/tx/${voucher.txHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-1 text-cyan-400 hover:text-cyan-300 transition-colors"
+              >
+                <span>View on Stellar Expert</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            )}
+          </div>
         </div>
 
       </div>
