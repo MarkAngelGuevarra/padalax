@@ -183,48 +183,51 @@ export const App: React.FC = () => {
         </div>
 
         {/* Tab Navigation Controls */}
-        <div className="flex justify-center mb-8">
-          <div className="inline-flex p-1.5 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md shadow-lg">
+        <div className="flex justify-center mb-8 px-2 sm:px-0">
+          <div className="grid grid-cols-2 sm:flex p-1.5 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md shadow-lg w-full sm:w-auto gap-1 sm:gap-0">
             
             <button
               onClick={() => setActiveTab('send')}
-              className={`flex items-center space-x-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              className={`flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeTab === 'send'
                   ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/25'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
               <Send className="w-4 h-4" />
-              <span>Send Remittance</span>
+              <span>Send</span>
+              <span className="hidden sm:inline">Remittance</span>
             </button>
 
             <button
               onClick={() => setActiveTab('claim')}
-              className={`flex items-center space-x-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              className={`flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeTab === 'claim'
                   ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/25'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
               <Gift className="w-4 h-4" />
-              <span>Claim Voucher</span>
+              <span>Claim</span>
+              <span className="hidden sm:inline">Voucher</span>
             </button>
 
             <button
               onClick={() => setActiveTab('refund')}
-              className={`flex items-center space-x-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              className={`flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeTab === 'refund'
                   ? 'bg-gradient-to-r from-amber-500 to-rose-600 text-white shadow-md shadow-amber-500/25'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
               <RotateCcw className="w-4 h-4" />
-              <span>Refund Escrow</span>
+              <span>Refund</span>
+              <span className="hidden sm:inline">Escrow</span>
             </button>
 
             <button
               onClick={() => setActiveTab('telemetry')}
-              className={`flex items-center space-x-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              className={`flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeTab === 'telemetry'
                   ? 'bg-slate-800 text-cyan-300 shadow-md'
                   : 'text-slate-400 hover:text-white'
