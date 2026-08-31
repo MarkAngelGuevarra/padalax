@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { generateClaimCode, sha256, EXCHANGE_RATES, getSavedRemittances } from '../stellar';
+import { generateClaimCode, sha256, EXCHANGE_RATES, FIAT_RATES, convertToPhp, getSavedRemittances } from '../stellar';
 
 describe('PadalaX Web3 Utility Suite', () => {
   it('generates a valid formatted secret claim PIN', () => {
@@ -20,12 +20,22 @@ describe('PadalaX Web3 Utility Suite', () => {
 
   it('calculates correct PHP conversion and fee savings vs traditional remittance', () => {
     const xlmAmount = 250;
-    const estimatedPhp = xlmAmount * EXCHANGE_RATES.XLM_PHP;
+    const estimatedPhp = convertToPhp(xlmAmount, 'XLM');
     expect(estimatedPhp).toBe(250 * 7.25);
 
     const traditionalFee = estimatedPhp * EXCHANGE_RATES.PHP_FEE_TRADITIONAL;
     expect(traditionalFee).toBeGreaterThan(0);
     expect(EXCHANGE_RATES.PADALAX_FEE).toBeLessThan(0.001);
+  });
+
+  it('supports major OFW host country fiat exchange rates', () => {
+    expect(FIAT_RATES).toHaveProperty('AED');
+    expect(FIAT_RATES).toHaveProperty('SAR');
+    expect(FIAT_RATES).toHaveProperty('SGD');
+    expect(FIAT_RATES).toHaveProperty('JPY');
+    expect(FIAT_RATES).toHaveProperty('EUR');
+    expect(FIAT_RATES.AED.rateToPhp).toBeGreaterThan(10);
+    expect(FIAT_RATES.SGD.rateToPhp).toBeGreaterThan(30);
   });
 
   it('loads default mock escrow records if storage is empty', () => {

@@ -4,13 +4,31 @@ export const HORIZON_TESTNET_URL = 'https://horizon-testnet.stellar.org';
 export const STELLAR_EXPERT_TESTNET = 'https://stellar.expert/explorer/testnet';
 export const DEPLOYED_CONTRACT_ID = 'CATUXAJ7QPHA5AQM3F3D2HXAFN2BDEZHRTXUL2742XT6LVA2JRO7S3DM';
 
-// Exchange rates (mock real-time reference)
+// Exchange rates & Multi-Fiat Ticker
 export const EXCHANGE_RATES = {
   XLM_PHP: 7.25,
   USDC_PHP: 57.80,
   PHP_FEE_TRADITIONAL: 0.065, // 6.5% traditional fee
   PADALAX_FEE: 0.0001, // < $0.001
 };
+
+export const FIAT_RATES: Record<string, { symbol: string; rateToPhp: number; flag: string }> = {
+  PHP: { symbol: '₱', rateToPhp: 1.0, flag: '🇵🇭' },
+  USD: { symbol: '$', rateToPhp: 57.80, flag: '🇺🇸' },
+  AED: { symbol: 'AED ', rateToPhp: 15.74, flag: '🇦🇪' },
+  SAR: { symbol: 'SAR ', rateToPhp: 15.41, flag: '🇸🇦' },
+  SGD: { symbol: 'S$', rateToPhp: 43.50, flag: '🇸🇬' },
+  JPY: { symbol: '¥', rateToPhp: 0.38, flag: '🇯🇵' },
+  EUR: { symbol: '€', rateToPhp: 62.10, flag: '🇪🇺' },
+  HKD: { symbol: 'HK$', rateToPhp: 7.42, flag: '🇭🇰' },
+  CAD: { symbol: 'CA$', rateToPhp: 42.15, flag: '🇨🇦' },
+  GBP: { symbol: '£', rateToPhp: 74.20, flag: '🇬🇧' },
+};
+
+export function convertToPhp(amount: number, fromCurrency: 'XLM' | 'USDC'): number {
+  const rate = fromCurrency === 'XLM' ? EXCHANGE_RATES.XLM_PHP : EXCHANGE_RATES.USDC_PHP;
+  return amount * rate;
+}
 
 export type WalletType = 'freighter' | 'albedo' | 'xbull' | 'lobstr' | 'rabet';
 
