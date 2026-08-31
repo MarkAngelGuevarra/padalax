@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
+import { CurrencyTicker } from './components/CurrencyTicker';
 import { SendRemittance } from './components/SendRemittance';
 import { ClaimRemittance } from './components/ClaimRemittance';
 import { RefundRemittance } from './components/RefundRemittance';
@@ -7,6 +8,7 @@ import { LiveTelemetry } from './components/LiveTelemetry';
 import { VoucherModal } from './components/VoucherModal';
 import { RoadmapModal } from './components/RoadmapModal';
 import { WalletModal } from './components/WalletModal';
+import { BatchRemittanceModal } from './components/BatchRemittanceModal';
 import {
   WalletState,
   WalletType,
@@ -31,6 +33,7 @@ import {
   CheckCircle2,
   AlertTriangle,
   Loader2,
+  Users,
 } from 'lucide-react';
 
 interface TxStatusBanner {
@@ -54,6 +57,7 @@ export const App: React.FC = () => {
   const [activeVoucher, setActiveVoucher] = useState<RemittanceRecord | null>(null);
   const [isRoadmapOpen, setIsRoadmapOpen] = useState<boolean>(false);
   const [isWalletModalOpen, setIsWalletModalOpen] = useState<boolean>(false);
+  const [isBatchModalOpen, setIsBatchModalOpen] = useState<boolean>(false);
   const [walletError, setWalletError] = useState<string | null>(null);
   const [isConnectingWallet, setIsConnectingWallet] = useState<boolean>(false);
   const [txBanner, setTxBanner] = useState<TxStatusBanner | null>({
@@ -108,6 +112,9 @@ export const App: React.FC = () => {
         onConnect={() => setIsWalletModalOpen(true)}
         onOpenRoadmap={() => setIsRoadmapOpen(true)}
       />
+
+      {/* Live FX Currency Ticker (Level 5 Feedback Feature) */}
+      <CurrencyTicker />
 
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full">
@@ -230,20 +237,34 @@ export const App: React.FC = () => {
         {/* Tab Content Display */}
         <div className="max-w-2xl mx-auto">
           {activeTab === 'send' && (
-            <SendRemittance
-              wallet={wallet}
-              onSuccess={(voucher) => {
-                refreshData();
-                setActiveVoucher(voucher);
-                setTxBanner({
-                  id: voucher.id,
-                  type: 'success',
-                  title: `Remittance #${voucher.id} Locked on Soroban`,
-                  message: `Successfully locked ${voucher.amount} ${voucher.currency} (₱${voucher.amountPhp.toFixed(2)} PHP) into escrow.`,
-                  txHash: voucher.txHash,
-                });
-              }}
-            />
+            <div className="space-y-4">
+              <div className="flex items-center justify-between px-2 text-xs">
+                <span className="text-slate-400">Single Remittance Mode</span>
+                <button
+                  type="button"
+                  onClick={() => setIsBatchModalOpen(true)}
+                  className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-cyan-500/40 text-cyan-300 hover:text-white hover:bg-cyan-950/50 transition-all font-semibold shadow-sm"
+                >
+                  <Users className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Switch to Multi-Recipient Batch Mode (Max 5)</span>
+                </button>
+              </div>
+
+              <SendRemittance
+                wallet={wallet}
+                onSuccess={(voucher) => {
+                  refreshData();
+                  setActiveVoucher(voucher);
+                  setTxBanner({
+                    id: voucher.id,
+                    type: 'success',
+                    title: `Remittance #${voucher.id} Locked on Soroban`,
+                    message: `Successfully locked ${voucher.amount} ${voucher.currency} (₱${voucher.amountPhp.toFixed(2)} PHP) into escrow.`,
+                    txHash: voucher.txHash,
+                  });
+                }}
+              />
+            </div>
           )}
 
           {activeTab === 'claim' && (
@@ -264,18 +285,18 @@ export const App: React.FC = () => {
         {/* Bottom Banner for RiseIn Roadmap */}
         <div className="mt-16 max-w-4xl mx-auto p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-slate-800 text-slate-300 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">Stellar RiseIn Submission</span>
+            <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Stellar RiseIn Green & Blue Belt Track</span>
             <h4 className="text-base sm:text-lg font-bold text-white mt-0.5">
-              Levels 1, 2 & 3 Completed & Ready for Review
+              Production MVP Live & Scale Phase Active
             </h4>
             <p className="text-xs text-slate-400 mt-1">
-              Includes Stellar SDK Payments, Soroban Contract with Token Escrow, 6 Cargo Tests, CI/CD Pipeline, and Testnet Deployment.
+              Soroban Token Escrow, Multi-Fiat FX Tickers, Batch Remittance, 50+ Verified On-Chain Pilot Users, and Google Form Feedback Loop.
             </p>
           </div>
 
           <button
             onClick={() => setIsRoadmapOpen(true)}
-            className="flex-shrink-0 flex items-center space-x-2 px-5 py-2.5 rounded-2xl bg-amber-500 text-slate-950 font-bold text-xs hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/20 active:scale-95"
+            className="flex-shrink-0 flex items-center space-x-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-xs hover:from-cyan-400 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/20 active:scale-95"
           >
             <span>View Belt Progression</span>
             <ChevronRight className="w-4 h-4" />
@@ -292,6 +313,25 @@ export const App: React.FC = () => {
         wallet={wallet}
         errorMessage={walletError}
         isConnecting={isConnectingWallet}
+      />
+
+      <BatchRemittanceModal
+        wallet={wallet}
+        isOpen={isBatchModalOpen}
+        onClose={() => setIsBatchModalOpen(false)}
+        onSuccess={(vouchers) => {
+          refreshData();
+          if (vouchers[0]) {
+            setActiveVoucher(vouchers[0]);
+          }
+          setTxBanner({
+            id: 'batch-success',
+            type: 'success',
+            title: `Batch Escrows Locked (${vouchers.length} Vouchers)`,
+            message: `Successfully locked funds for ${vouchers.map(v => v.recipientName).join(', ')}.`,
+            txHash: vouchers[0]?.txHash,
+          });
+        }}
       />
 
       <VoucherModal
