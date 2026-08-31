@@ -9,6 +9,7 @@ import { VoucherModal } from './components/VoucherModal';
 import { RoadmapModal } from './components/RoadmapModal';
 import { WalletModal } from './components/WalletModal';
 import { BatchRemittanceModal } from './components/BatchRemittanceModal';
+import { QRPhModal } from './components/QRPhModal';
 import {
   WalletState,
   WalletType,
@@ -34,6 +35,7 @@ import {
   AlertTriangle,
   Loader2,
   Users,
+  QrCode,
 } from 'lucide-react';
 
 interface TxStatusBanner {
@@ -58,6 +60,7 @@ export const App: React.FC = () => {
   const [isRoadmapOpen, setIsRoadmapOpen] = useState<boolean>(false);
   const [isWalletModalOpen, setIsWalletModalOpen] = useState<boolean>(false);
   const [isBatchModalOpen, setIsBatchModalOpen] = useState<boolean>(false);
+  const [isQRPhOpen, setIsQRPhOpen] = useState<boolean>(false);
   const [walletError, setWalletError] = useState<string | null>(null);
   const [isConnectingWallet, setIsConnectingWallet] = useState<boolean>(false);
   const [txBanner, setTxBanner] = useState<TxStatusBanner | null>({
@@ -268,7 +271,20 @@ export const App: React.FC = () => {
           )}
 
           {activeTab === 'claim' && (
-            <ClaimRemittance onClaimSuccess={refreshData} />
+            <div className="space-y-4">
+              <div className="flex items-center justify-between px-2 text-xs">
+                <span className="text-slate-400">Standard Web3 Claim</span>
+                <button
+                  type="button"
+                  onClick={() => setIsQRPhOpen(true)}
+                  className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-emerald-500/40 text-emerald-300 hover:text-white hover:bg-emerald-950/50 transition-all font-semibold shadow-sm"
+                >
+                  <QrCode className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Generate QRPh National Standard Code (GCash/Maya/Over-The-Counter)</span>
+                </button>
+              </div>
+              <ClaimRemittance onClaimSuccess={refreshData} />
+            </div>
           )}
 
           {activeTab === 'refund' && (
@@ -328,10 +344,16 @@ export const App: React.FC = () => {
             id: 'batch-success',
             type: 'success',
             title: `Batch Escrows Locked (${vouchers.length} Vouchers)`,
-            message: `Successfully locked funds for ${vouchers.map(v => v.recipientName).join(', ')}.`,
-            txHash: vouchers[0]?.txHash,
+            message: `Successfully generated ${vouchers.length} independent remittance claim vouchers on Soroban.`,
           });
         }}
+      />
+
+      <QRPhModal
+        isOpen={isQRPhOpen}
+        onClose={() => setIsQRPhOpen(false)}
+        claimPin="772910"
+        amountPhp="5,000.00"
       />
 
       <VoucherModal
