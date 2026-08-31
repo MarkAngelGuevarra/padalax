@@ -1,4 +1,4 @@
-﻿# 🇵🇭 PadalaX — Level 5 Official Pitch Deck & Ecosystem Presentation
+# 🇵🇭 PadalaX — Level 5 Official Pitch Deck & Ecosystem Presentation
 
 ---
 
@@ -7,6 +7,7 @@
 * **Tagline:** Sashing remittance fees from 8% to < $0.001 for 10 Million Overseas Filipino Workers (OFWs).
 * **Blockchain:** Stellar Network & Soroban Smart Contracts
 * **Live dApp:** [https://padalax.vercel.app](https://padalax.vercel.app)
+* **Demo Video:** [Google Drive Demo Video](https://drive.google.com/file/d/1IsfVttO4Vp3DUwnumHxPOZRhOoPJchWE/view?usp=sharing)
 * **Presenter:** Mark Guevarra | Stellar RiseIn Builder
 
 ---

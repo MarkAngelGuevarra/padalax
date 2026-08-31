@@ -29,11 +29,12 @@
 | Submission Requirement | Status | Live Link / Identifier |
 | :--- | :---: | :--- |
 | 🌐 **Live Deployed Application (Vercel)** | ✅ Active | [padalax.vercel.app](https://padalax.vercel.app) |
-| 📊 **PPT / Pitch Deck (Markdown & PDF)** | ✅ Ready | [`PadalaX_Pitch_Deck.md`](./PadalaX_Pitch_Deck.md) • [`PadalaX_Traction_Report_50_Users.pdf`](./PadalaX_Traction_Report_50_Users.pdf) |
+| 🎥 **Live Product Demo Video** | ✅ Verified | [Google Drive Demo Video](https://drive.google.com/file/d/1IsfVttO4Vp3DUwnumHxPOZRhOoPJchWE/view?usp=sharing) |
+| 📊 **PPT / Pitch Deck (Markdown & PDF)** | ✅ Ready | [`PadalaX_Pitch_Deck.md`](./PadalaX_Pitch_Deck.md) • [`PadalaX_Traction_Report_50_Users.pdf`](./PadalaX_Traction_Report_50_Users.pdf) • [`PadalaX_Pitch_Deck.pptx`](./PadalaX_Pitch_Deck.pptx) |
 | 👥 **Proof of 50+ Real On-Chain Users** | ✅ Verified (50/50) | [`pilot_users_traction_50_users.csv`](./pilot_users_traction_50_users.csv) |
 | 📋 **Google Form Feedback & Excel Dataset** | ✅ Linked | [`pilot_users_traction_50_users.csv`](./pilot_users_traction_50_users.csv) (Avg Rating: **4.85/5.0**) |
 | 📜 **Deployed Soroban Contract** | ✅ Verified | [`CATUXAJ7QPHA5AQM3F3D2HXAFN2BDEZHRTXUL2742XT6LVA2JRO7S3DM`](https://stellar.expert/explorer/testnet/contract/CATUXAJ7QPHA5AQM3F3D2HXAFN2BDEZHRTXUL2742XT6LVA2JRO7S3DM) |
-| 📈 **Commit History Standards** | ✅ 23 Commits | 23 Conventional Commits (Well above 20+ requirement) |
+| 📈 **Commit History Standards** | ✅ 24+ Commits | 24 Conventional Commits (Well above 20+ requirement) |
 | 🧪 **Contract & Frontend Test Suites** | ✅ 100% Pass | 6 Rust Cargo Tests + 5 Vitest Suites passing |
 
 ---
@@ -71,6 +72,7 @@ To onboard testnet users and evaluate product-market fit among Overseas Filipino
 | Submission Requirement | Status | Live Link / Identifier |
 | :--- | :---: | :--- |
 | 🌐 **Live Production dApp (Vercel)** | ✅ Deployed | [padalax.vercel.app](https://padalax.vercel.app) |
+| 🎥 **Live Product Demo Video** | ✅ Verified | [Google Drive Demo Video](https://drive.google.com/file/d/1IsfVttO4Vp3DUwnumHxPOZRhOoPJchWE/view?usp=sharing) |
 | 📜 **Deployed Soroban Contract** | ✅ Verified | [`CATUXAJ7QPHA5AQM3F3D2HXAFN2BDEZHRTXUL2742XT6LVA2JRO7S3DM`](https://stellar.expert/explorer/testnet/contract/CATUXAJ7QPHA5AQM3F3D2HXAFN2BDEZHRTXUL2742XT6LVA2JRO7S3DM) |
 | ⚡ **Contract Interaction Tx Hash** | ✅ Verified | [`4d266d77030d59f9afd3de0f8a2f123612f3db1e5e3e823acb4091b11bc24883`](https://stellar.expert/explorer/testnet/tx/4d266d77030d59f9afd3de0f8a2f123612f3db1e5e3e823acb4091b11bc24883) |
 | 👥 **Real User Onboarding Proof (12 Users)** | ✅ Verified | [`pilot_users_traction_level4.csv`](./pilot_users_traction_level4.csv) |
